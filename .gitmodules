@@ -1,0 +1,3 @@
+[submodule "ESP8266-library"]
+	path = ESP8266-library
+	url = https://github.com/Siddhartha123/ESP8266-library.git
