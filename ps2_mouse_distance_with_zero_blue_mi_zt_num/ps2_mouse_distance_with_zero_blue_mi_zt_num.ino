@@ -13,12 +13,10 @@ int calib=1; // calibration factor
  * initialize the mouse. Reset it, and place it into remote
  * mode, so we can get the encoder data on demand.
  */
-
-
 void setup()
 {
   pinMode(zeroPin, INPUT_PULLUP);
-  Serial.begin(115200);
+  Serial.begin(9600);
   mouse.init();
 }
 /*
@@ -38,31 +36,18 @@ void loop()
   mx = mouse.read();
   my = mouse.read();
 
-
-if (Serial.read()==('z')) {
-     newmy=0;
-     newmx=0;
-}
   if ( digitalRead(zeroPin) == LOW)
    {
      newmy=0;
-     newmx=0;
-     
+     newmx=0;  
    } 
+   
    else {
      newmx=newmx+ mx;
      newmy=newmy+my;
-    
-
-   Serial.print("Y=  ");
-   Serial.println(newmy)/calib;
-   Serial.print("?");
-   Serial.print("X=  ");
-   Serial.println(newmx)/calib;
-   
-  
+   Serial.println((newmy)/calib);
+   Serial.print(" ");
+   Serial.print((newmx)/calib);
   delay(1);
-  
- 
    }
 }
