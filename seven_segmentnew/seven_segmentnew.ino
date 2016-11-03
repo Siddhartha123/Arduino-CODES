@@ -5,7 +5,7 @@ int count=0,flag=0;
 int a,b;
 char c[4];
  int i,j,k=0;
- char val;
+int val;
 void print_digit(int digit,int place)
 {
     digitalWrite(pins[place-1][0], LOW);
@@ -19,28 +19,33 @@ for(i=0;i<4;i++)
   for(j=0;j<3;j++)
     pinMode(pins[i][j],OUTPUT);
 }
+for(i=0;i<4;i++)
+print_digit(0,i+1);
+pinMode(A0,INPUT_PULLUP);
+pinMode(A1,INPUT_PULLUP);
+
 read_eeprom();
 }
 
 void loop()
 {
-  /*a=analogRead(A0);
-  increase_count();
-  delay(500);
+  a=analogRead(A0);
+  //Serial.println(a);
+ // Serial.println("\t\t");
   while(a>100 && a<400)
     {
       flag=1;
       b=analogRead(A1);
+      Serial.print(b);
       if(b>100 && b<400)
       {
         flag=2;
         increase_count();
+        delay(1500);
         break;
       }
     }
-  flag=0;*/
-  increase_count();
-  delay(350);
+  flag=0;
 }
   
 void increase_count()
@@ -53,9 +58,9 @@ for(i=0;i<4;i++)
 {
   j=temp%10;
   print_digit(j,i+1);
+  EEPROM.write(i,j);  
   temp=temp/10;  
 }
-EEPROM.put(0,count);//write "count" to eeprom
 }
 
  void read_eeprom()
@@ -63,8 +68,9 @@ EEPROM.put(0,count);//write "count" to eeprom
     count=0;
   for(i=0;i<4;i++)
   {
-    val=(char)EEPROM.read(i);  
-    count+=pow(10,i)*(val-48);
+    val=(int)EEPROM.read(i); 
+    Serial.println(val);
+    count+=pow(10,i)*val; 
   }
   }
 
