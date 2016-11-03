@@ -2,6 +2,7 @@
 int pins[4][3]={{2,3,4},{5,6,7},{8,9,10},{11,12,13}}; //for each sub-array 1st pin is latch, 2nd pin is data and 3rd pin is clock
 int s[10] ={129,243,73,97,51,37,5,241,1,49};
 int count=0,flag=0;
+  int temp;
 int a,b;
 char c[4];
  int i,j,k=0;
@@ -19,12 +20,18 @@ for(i=0;i<4;i++)
   for(j=0;j<3;j++)
     pinMode(pins[i][j],OUTPUT);
 }
-for(i=0;i<4;i++)
-print_digit(0,i+1);
 pinMode(A0,INPUT_PULLUP);
 pinMode(A1,INPUT_PULLUP);
 
 read_eeprom();
+temp=count;
+for(i=0;i<4;i++)
+{
+  j=temp%10;
+  print_digit(j,i+1);
+  EEPROM.write(i,j);  
+  temp=temp/10;  
+}
 }
 
 void loop()
@@ -50,7 +57,6 @@ void loop()
   
 void increase_count()
 {
-  int temp;
 count++;
 Serial.println(count);
 temp=count;
