@@ -37,19 +37,35 @@ for(i=0;i<4;i++)
 void loop()
 {
   a=analogRead(A0);
-  Serial.println(a);
-  Serial.println("\t\t");
-  while(a<250)
+  //Serial.println(a);
+ // Serial.println("\t\t");
+  while(a>100 && a<400)
     {
-      //delay(300);
       flag=1;
       b=analogRead(A1);
       Serial.print(b);
-      if(b<600)
+      if(b>100 && b<400)
       {
         flag=2;
         increase_count();
-        delay(100);
+        delay(1000);
+        break;
+      }
+    }
+  flag=0;
+  a=analogRead(A1);
+  //Serial.println(a);
+ // Serial.println("\t\t");
+  while(a>100 && a<400)
+    {
+      flag=1;
+      b=analogRead(A0);
+      Serial.print(b);
+      if(b>100 && b<400)
+      {
+        flag=2;
+        decrease_count();
+        delay(1000);
         break;
       }
     }
@@ -69,6 +85,22 @@ for(i=0;i<4;i++)
   temp=temp/10;  
 }
 }
+void decrease_count()
+{
+count--;
+Serial.println(count);
+temp=count;
+for(i=0;i<4;i++)
+{
+  j=temp%10;
+  print_digit(j,i+1);
+  EEPROM.write(i,j);  
+  temp=temp/10;  
+}
+}
+
+
+
 
  void read_eeprom()
   {
