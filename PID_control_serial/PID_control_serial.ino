@@ -1,5 +1,4 @@
 void setup() {
-  // put your setup code here, to run once:
 Serial.begin(9600);
 }
 int i;
@@ -19,24 +18,36 @@ void loop() {
     {
       case 'p':
           kp=atof(&s1[0]);
+         
+          Serial.print("\nkp ");
+          Serial.print(kp);
           break;
       case 'i':
           ki=atof(&s1[0]);
+          
+          Serial.print("\nki ");
+          Serial.print(ki);
           break;
       case 'd':
           kd=atof(&s1[0]);
+ 
+          Serial.print("\nkd ");
+          Serial.print(kd);
           break;
+       case 'a':
+       Serial.print("\n Values");
+       Serial.print("\nkp");
+          Serial.print(kp);
+           Serial.print("\nki");
+          Serial.print(ki);
+            Serial.print("\nkd");
+          Serial.print(kd);
+       
     }
   }
-  // put your main code here, to run repeatedly:
-Serial.print("\nkp");
-Serial.print(kp);
 
-Serial.print("\nkd");
-Serial.print(kd);
 
-Serial.print("\nki");
-Serial.print(ki);
 
-delay(3000);
+
+
 }
