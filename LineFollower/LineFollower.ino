@@ -32,9 +32,14 @@
 void loop() 
 {
   
-readInput();
+/*readInput();
 setValues();
 processValues();
+*/
+goRight();
+delay(1000);
+goLeft();
+delay(1000);
 }
 void readInput()
 {
@@ -154,10 +159,10 @@ void softLeft()
   }
 void goLeft()
   {
-    analogWrite(pwmR, 147);
+    analogWrite(pwmR, 100);
     digitalWrite(R1, HIGH);
     digitalWrite(R2, LOW);
-    analogWrite(pwmL, 70);
+    analogWrite(pwmL, 0);
     digitalWrite(L1, LOW);
     digitalWrite(L2, HIGH);
     Serial.print("left ");
@@ -165,10 +170,10 @@ void goLeft()
   }
   void goRight()
   {
-    analogWrite(pwmR, 70);
+    analogWrite(pwmR, 0);
     digitalWrite(L1, HIGH);
     digitalWrite(L2, LOW);
-    analogWrite(pwmL, 150);
+    analogWrite(pwmL,100);
     digitalWrite(R1, LOW);
     digitalWrite(R2, HIGH);
    Serial.print("Right ");

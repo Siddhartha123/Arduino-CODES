@@ -1,5 +1,13 @@
+/*
+ * A0-orange
+ * A1-white
+ */
+
+
 int x,y,inpx=A0,inpy=A1;
-int l1=3,l2=4,r1=5,r2=6,testx,testy;
+int l1=9,l2=4,r1=8,r2=10,testx,testy;
+int pwm_pinr=5,pwm_pinl=3;
+int pinr1=8,pinr2=10,pinl1=9,pinl2=4;
 float pwmr,pwml,x1,y1;
 void setup() {
   // put your setup code here, to run once:
@@ -66,6 +74,7 @@ if(abs(y)>abs(x))
     r1=0;
     l2=1;
     Serial.print("backward");
+    
     Serial.print(" ");
     Serial.print("backward");
     Serial.print(" ");
@@ -99,6 +108,12 @@ else if(abs(y)<abs(x))
   
   }
 }
+analogWrite(pwm_pinr,pwmr);
+analogWrite(pwm_pinl,pwml);
+digitalWrite(pinr1,r1);
+digitalWrite(pinr2,r2);
+digitalWrite(pinl1,l1);
+digitalWrite(pinl2,l2);
 
 Serial.println("");
   
