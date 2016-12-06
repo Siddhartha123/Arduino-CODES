@@ -1,4 +1,4 @@
-int read_sensor()
+void read_sensor()
 {
   for(i=0;i<7;i++)
     sensor_read[i]=analogRead(i+14);
@@ -20,7 +20,6 @@ void process_sensor()
 void PID_program()
 { 
     read_sensor();
-    
     previousError = error;                                  // save previous error for differential 
     error = avgSensor - 4.5;                               // Count how much robot deviate from center
     totalError += error;                                      // Accumulate error for integral
@@ -40,5 +39,10 @@ void PID_program()
       PWM_Right = 255 - int(power);
       PWM_Left = 255;
     }
+}
+
+void generate_path()
+{
    
 }
+

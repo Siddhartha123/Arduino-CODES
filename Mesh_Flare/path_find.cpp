@@ -57,23 +57,24 @@ int main()
 	int prevdir=3;
 	grid[dx][dy]=i;
 	while(true){
-		cout<<"Enter no of ways"<<endl;
-		cin>>w;
-		vector<int>arr(w);
+		//cout<<"Enter no of ways"<<endl;
+		//cin>>w;
+   int arr[10];
+		//vector<int>arr(w);
 		for(int j=0;j<w;j++){
-			cin>>arr[j];
+			//cin>>arr[j];
 		}
 		sort(arr.begin(),arr.end());
 		mindir=0;
-		cout<<prevdir<<endl;
+		//cout<<prevdir<<endl;
 		mingridpoint=grid[dx][dy];
 		for(int j=0;j<w;j++){
 			arr[j]=((arr[j]%8)+(((prevdir%8)-(3%8)+8)%8))%8;
 			if(arr[j]==0) arr[j]=8;
 		}
 		for(int j=0;j<w;j++)
-			cout<<arr[j]<<" ";
-		cout<<endl;
+			//cout<<arr[j]<<" ";
+		//cout<<endl;
 		for(int j=0;j<w;j++){
 			if(arr[j]==1){
 				if(mingridpoint>grid[dx][dy-1]){
@@ -258,7 +259,7 @@ int main()
 			}
 		}
 		else{
-		cout<<mindir<<endl;
+		//cout<<mindir<<endl;
 		flag=0;
 		if(w==0)
 			mindir=0;
