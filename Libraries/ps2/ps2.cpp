@@ -15,7 +15,7 @@
  * the clock and data pins can be wired directly to the clk and data pins
  * of the PS2 connector.  No external parts are needed.
  */
-PS2::PS2(int clk, int data)
+PS2::PS2(uint8_t clk, uint8_t data)
 {
 	_ps2clk = clk;
 	_ps2data = data;
@@ -30,14 +30,14 @@ PS2::PS2(int clk, int data)
  * pullup resistors.
  */
 void
-PS2::gohi(int pin)
+PS2::gohi(uint8_t pin)
 {
 	pinMode(pin, INPUT);
 	digitalWrite(pin, HIGH);
 }
 
 void
-PS2::golo(int pin)
+PS2::golo(uint8_t pin)
 {
 	pinMode(pin, OUTPUT);
 	digitalWrite(pin, LOW);

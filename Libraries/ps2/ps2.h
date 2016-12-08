@@ -13,15 +13,15 @@
 class PS2
 {
 	public:
-		PS2(int clk, int data);
+		PS2(uint8_t clk, uint8_t data);
 		void write(unsigned char data);
 		unsigned char read(void);
 		void init();
 	private:
-		int _ps2clk;
-		int _ps2data;
-		void golo(int pin);
-		void gohi(int pin);
+		uint8_t _ps2clk;
+		uint8_t _ps2data;
+		void golo(uint8_t pin);
+		void gohi(uint8_t pin);
 };
 
 #endif /* ps2_h */
