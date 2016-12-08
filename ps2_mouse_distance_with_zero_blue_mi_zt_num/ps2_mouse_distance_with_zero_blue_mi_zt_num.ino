@@ -1,13 +1,8 @@
 #include <ps2.h>
-/*
- * Pin 5 is the mouse data pin, pin 6 is the clock pin
- * Feel free to use whatever pins are convenient.
- */
-PS2 mouse(6, 5);
+
+PS2 mouse(9, 8); //(clock_pin, data_pin) any pin can be used
 int newmx=0;
 int newmy=0;
-int zeroPin=7; // to zero the counter
-int calib=1; // calibration factor
  
 /*
  * initialize the mouse. Reset it, and place it into remote
@@ -15,7 +10,6 @@ int calib=1; // calibration factor
  */
 void setup()
 {
-  pinMode(zeroPin, INPUT_PULLUP);
   Serial.begin(9600);
   mouse.init();
 }
@@ -25,29 +19,22 @@ void setup()
 */
 void loop()
 {
-  char mstat;
-  char mx;
-  char my;
+  char mouse_x,mouse_y;
+  int change_x;
+  int change_y;
  
   /* get a reading from the mouse */
   mouse.write(0xeb);  // give me data!
   mouse.read();      // ignore ack
-  mstat = mouse.read();
-  mx = mouse.read();
-  my = mouse.read();
-
-  if ( digitalRead(zeroPin) == LOW)
-   {
-     newmy=0;
-     newmx=0;  
-   } 
-   
-   else {
-     newmx=newmx+ mx;
-     newmy=newmy+my;
-   Serial.println((newmy)/calib);
-   Serial.print(" ");
-   Serial.print((newmx)/calib);
+  mouse.read();    //status byte
+  mouse_x = mouse.read();
+  mouse_y = mouse.read();
+  change_x=(int)mouse_x;
+  change_y=(int)mouse_y;
+  newmx=newmx+ change_x;
+  newmy=newmy+change_y;
+  Serial.print(newmx);
+  Serial.print("   ");
+  Serial.println(newmy);
   delay(1);
-   }
 }

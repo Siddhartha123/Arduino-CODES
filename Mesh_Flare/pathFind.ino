@@ -1,7 +1,7 @@
 /**************************************
 *FLOOD FILL GREEDY ALGORITHM
 *MESHFLARE
-*IITBOMBAY-TECHFEST-2K16
+*IITBOMBAY-TECHFEST-2K16  
 *-------------------------------------------------------------------------------------
 *Conventions:
 *West-1, Northwest-2 and so on.
@@ -11,10 +11,9 @@
 *boundaries = 250;
 *****************************************/
 
-using namespace std;
 #define gridX	13
 #define gridY	15
-#define WEST	1
+#define WEST	1                               //For reference only
 #define NORTHWEST	2
 #define NORTH	3
 #define NORTHEAST	4
@@ -26,7 +25,10 @@ using namespace std;
 
 
 //global variables declaration
-int dx, dy;
+int dx=5, dy=11;//present coordinate of bot
+int revdir,w,mindir,mingridpoint,flag,prevdir=3,j;//revese direction,no. of turns,direction to turn,value of grid point to turn,previous direction,loop variable
+int arr[2];
+uint8_t num_path;
 int grid[gridX][gridY] = {
 					                           250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
 					                           250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
@@ -39,42 +41,36 @@ int grid[gridX][gridY] = {
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250, 
                                                250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
-                                        };
-//Function prototypes
-void showgrid();
+                                        };//initial grid
 
 
-int main()
+
+
+void path()
 {
-	//local variables declaration
-	int i, j;
-	dx = 5;
-	dy = 11;
-	i=100;
-	int revdir,w,mindir,mingridpoint,flag;
-	int prevdir=3;
+  memset(arr,9,sizeof(arr));
+    for(int j=0;j<num_path;j++)
+    {
+    
+    }
+      //cin>>arr[j];
+}
+void trialrun()
+{
+
+
 	grid[dx][dy]=i;
-	while(true){
-		//cout<<"Enter no of ways"<<endl;
-		//cin>>w;
-   int arr[10];
-		//vector<int>arr(w);
-		for(int j=0;j<w;j++){
-			//cin>>arr[j];
-		}
-		sort(arr.begin(),arr.end());
+		
+		arr[0]= arr[0]>arr[1]?arr[1]:arr[0];
+		arr[1]=arr[0]>arr[1]?arr[0]:arr[1];
 		mindir=0;
-		//cout<<prevdir<<endl;
 		mingridpoint=grid[dx][dy];
 		for(int j=0;j<w;j++){
 			arr[j]=((arr[j]%8)+(((prevdir%8)-(3%8)+8)%8))%8;
 			if(arr[j]==0) arr[j]=8;
 		}
-		for(int j=0;j<w;j++)
-			//cout<<arr[j]<<" ";
-		//cout<<endl;
 		for(int j=0;j<w;j++){
 			if(arr[j]==1){
 				if(mingridpoint>grid[dx][dy-1]){
@@ -127,7 +123,6 @@ int main()
 		}
 		if(mingridpoint==grid[dx][dy] && w!=0){
 			if(w==1){
-				//i=grid[dx][dy];
 				mindir=arr[0];
 				grid[dx][dy]=200;
 				switch(mindir){
@@ -218,7 +213,6 @@ int main()
 						}
 					}
 				}
-				//i=grid[dx][dy];
 				grid[dx][dy]=200;
 				switch(mindir){
 					case 1:
@@ -255,17 +249,15 @@ int main()
 						break;
 				}
 				i=grid[dx][dy];
-
+				
 			}
 		}
 		else{
-		//cout<<mindir<<endl;
 		flag=0;
 		if(w==0)
 			mindir=0;
 		switch(mindir){
 			case 0:
-				//i=grid[dx][dy];
 				grid[dx][dy]=200;
 				flag=1;
 				if(prevdir==4)
@@ -356,18 +348,17 @@ int main()
 				dx=dx+1;
 				dy=dy-1;
 				break;
-
+				
 		}
 		if(flag==1)
 			mindir=revdir;
 		}
 		prevdir=mindir;
 		showgrid();
-
-	}
-
-
-
+		Serial.println();
+   Serial.println(dx+"    " +dy);
+		
+	
 }
 
 void showgrid()
@@ -376,12 +367,8 @@ void showgrid()
         for(i=0;i<gridX;i++)
         {
                 for(j=0;j<gridY;j++)
-                {
-			       printf("%d\t", grid[i][j]);
-                }
-		printf("\n");
-
+			                  Serial.print( grid[i][j]+"   ");
+		            Serial.println("");
         }
-
-
 }
+

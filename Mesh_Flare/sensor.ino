@@ -1,14 +1,9 @@
-void read_sensor()
-{
-  for(i=0;i<7;i++)
-    sensor_read[i]=analogRead(i+14);
-}
 void process_sensor()
 {
   for(i=0;i<7;i++)
-      sensor[i]=sensor_read[i]>512?1:0;
+      sensor[i]=analogRead(14+i)>thresh?1:0;
       
-  for(int i=0; i<7; i++) 
+  for(i=0; i<7; i++) 
     {
      if(sensor[i])
         activeSensor++;
@@ -19,13 +14,13 @@ void process_sensor()
 }
 void PID_program()
 { 
-    read_sensor();
+    
     previousError = error;                                  // save previous error for differential 
     error = avgSensor - 4.5;                               // Count how much robot deviate from center
     totalError += error;                                      // Accumulate error for integral
     power = kp*error + kd*(error-previousError) + ki*totalError;
     
-    if( power>255 ) { power = 255.0; }
+    if( power>255.0 ) { power = 255.0; }
     if( power<-255.0 ) { power = -255.0; }
     
     if(power<0) // Turn left
