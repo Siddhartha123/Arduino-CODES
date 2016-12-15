@@ -1,6 +1,6 @@
 #include <ps2.h>
 
-PS2 mouse(9, 8); //(clock_pin, data_pin) any pin can be used
+PS2 mouse(11, 10); //(clock_pin, data_pin) any pin can be used
 int newmx=0;
 int newmy=0;
  

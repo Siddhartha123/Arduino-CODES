@@ -21,17 +21,20 @@
 #define SOUTHEAST	6
 #define SOUTH	7
 #define SOUTHWEST	8
-
+#define end_row 8
+#define end_col 3
+#define start_row 5
+#define start_col 11
 
 
 //global variables declaration
 int dx=5, dy=11;//present coordinate of bot
-int revdir,w,mindir,mingridpoint,flag,prevdir=3,j;//revese direction,no. of turns,direction to turn,value of grid point to turn,previous direction,loop variable
-int arr[2];
-uint8_t num_path;
-int grid[gridX][gridY] = {
+int revdir,w,way,mindir,mingridpoint,flag,prevdir=3,j;//revese direction,no. of turns,direction to turn,value of grid point to turn,previous direction,loop variable
+int arr[2],brr[2];       
+
+grid[][] = {
 					                           250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
-					                           250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+					                                     250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
@@ -42,36 +45,31 @@ int grid[gridX][gridY] = {
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
                                                250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250, 
-                                               250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
+                                      250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
                                         };//initial grid
 
 
 
+grid[dx][dy]=i;
 
-void path()
-{
-  memset(arr,9,sizeof(arr));
-    for(int j=0;j<num_path;j++)
-    {
-    
-    }
-      //cin>>arr[j];
-}
+
 void trialrun()
 {
 
 
-	grid[dx][dy]=i;
+	
 		
 		arr[0]= arr[0]>arr[1]?arr[1]:arr[0];
 		arr[1]=arr[0]>arr[1]?arr[0]:arr[1];
 		mindir=0;
 		mingridpoint=grid[dx][dy];
 		for(int j=0;j<w;j++){
+      brr[j]=arr[j];
 			arr[j]=((arr[j]%8)+(((prevdir%8)-(3%8)+8)%8))%8;
 			if(arr[j]==0) arr[j]=8;
 		}
 		for(int j=0;j<w;j++){
+    way=brr[j];
 			if(arr[j]==1){
 				if(mingridpoint>grid[dx][dy-1]){
 					mingridpoint=grid[dx][dy-1];
@@ -356,10 +354,135 @@ void trialrun()
 		prevdir=mindir;
 		showgrid();
 		Serial.println();
-   Serial.println(dx+"    " +dy);
+   Serial.println(dx+"    " +dy+"    "+way);
+   if(way==1 || way==2)
+   {
+    goLeft();
+    Front();
+   }
+   else if(way==3) Front();
+   else if(way==4 || way==5)
+   {
+    goRight();
+    Front();
+   }
 		
 	
 }
+
+
+void shortest_path()
+{
+  int i=start_row,j=start_col;
+  int gridpt=100,flag=0;
+  while(i!=end_row || j!=end_col)
+  {
+    //cout<<1<<" ";
+    if(grid[i][j-1]==gridpt-1)
+    {
+      flag++;
+      j-=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i-1][j-1]==gridpt-1)
+    {
+      flag++;
+      j-=1;i-=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i-1][j]==gridpt-1)
+    {
+      flag++;
+      i-=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i-1][j+1]==gridpt-1)
+    {
+      flag++;
+      j+=1;i-=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i][j+1]==gridpt-1)
+    {
+      flag++;
+      j+=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i+1][j+1]==gridpt-1)
+    {
+      flag++;
+      j+=1;i+=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i+1][j]==gridpt-1)
+    {
+      flag++;
+      i+=1;
+      gridpt=grid[i][j];
+    }
+    else if(grid[i+1][j-1]==gridpt-1)
+    {
+      flag++;
+      j-=1;i+=1;
+      gridpt=grid[i][j];
+    }
+    if(flag==0)
+    {
+      //cout<<"csyjehfshsjvjknvjkhvjrhivjjlhiub";
+      if(grid[i][j-1]==gridpt+1)
+        {
+        grid[i][j]=200;
+          j-=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i-1][j-1]==gridpt+1)
+        {
+        grid[i][j]=200;
+          j-=1;i-=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i-1][j]==gridpt+1)
+        {
+        grid[i][j]=200;
+          i-=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i-1][j+1]==gridpt+1)
+        {
+        grid[i][j]=200;
+          i-=1;j+=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i][j+1]==gridpt+1)
+        {
+        grid[i][j]=200;
+          j+=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i+1][j+1]==gridpt+1)
+        {
+        grid[i][j]=200;
+          j+=1;i+=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i+1][j]==gridpt+1)
+        {
+        grid[i][j]=200;
+          i+=1;
+          gridpt=grid[i][j];
+        }
+        else if(grid[i+1][j-1]==gridpt+1)
+        {
+        grid[i][j]=200;
+          j-=1;i+=1;
+          gridpt=grid[i][j];
+        }
+    }
+    flag=0;
+  }
+   
+}
+
 
 void showgrid()
 {

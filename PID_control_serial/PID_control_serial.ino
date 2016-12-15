@@ -2,12 +2,13 @@ void setup() {
 Serial.begin(9600);
 }
 int i;
-char c;
 float kp,ki,kd;
+char c;
+
 String s;
 String s1="                     ";
 void loop() {
-  if(Serial.available())
+ while(Serial.available())
   {
     s=Serial.readStringUntil(',');
     c=s[0];
@@ -18,13 +19,11 @@ void loop() {
     {
       case 'p':
           kp=atof(&s1[0]);
-         
           Serial.print("\nkp ");
           Serial.print(kp);
           break;
       case 'i':
           ki=atof(&s1[0]);
-          
           Serial.print("\nki ");
           Serial.print(ki);
           break;
@@ -45,7 +44,7 @@ void loop() {
        
     }
   }
-
+Serial.println("hi");
 
 
 

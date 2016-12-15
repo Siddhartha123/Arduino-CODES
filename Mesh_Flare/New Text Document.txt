@@ -1,0 +1,40 @@
+void PID_program()
+{ 
+    previousError = error;                                  // save previous error for differential 
+    error = avgSensor - 5.3333;                               // Count how much robot deviate from center
+    //Serial.print("error=");
+    //Serial.println(error);
+    totalError += error;                                      // Accumulate error for integral
+    power = kp*error + kd*(error-previousError) + ki*totalError;
+    //Serial.print("power=");
+    ///Serial.println(power);
+    if( power>255.0 ) { power = 255.0; }
+    if( power<-255.0 ) { power = -255.0; }
+    
+    if(power<0) // Turn left
+    {
+      PWM_Right = 113;
+      PWM_Left = 100 - abs(int(power));
+    }
+    else // Turn right
+    {
+      PWM_Right = 113 - int(power);
+      PWM_Left = 100;
+    }
+    Serial.print(PWM_Left);
+    Serial.print("   ");
+    Serial.println(PWM_Right);
+     //analogWrite(pwmR_pin,PWM_Right);
+      //analogWrite(pwmL_pin,PWM_Left);
+}
+
+void get_path()
+{
+   
+}
+char c;
+String s;
+String s1="                     ";
+
+
+

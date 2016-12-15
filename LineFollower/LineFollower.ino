@@ -1,17 +1,11 @@
    #define SENSORS 5
- #define s6 A5
-  #define s1 A4
-  #define s2 A3
-  #define s3 A2
-  #define s4 A1
-  #define s5 A0
   #define THRESH 300
-  #define R1 8
-  #define R2 10
-  #define pwmR 5                //Right Motor=M4
-  #define L1 9
-  #define L2 4
-  #define pwmL 3            //Left Motor=M2
+  #define R1 5
+  #define R2 4
+  #define pwmR 10                //Right Motor=M4
+  #define L1 3
+  #define L2 2
+  #define pwmL 11            //Left Motor=M2
              
         
   int inp_sensors[SENSORS], i;
@@ -31,43 +25,17 @@
 
 void loop() 
 {
-  
-/*readInput();
+  readInput();
 setValues();
 processValues();
-*/
-goRight();
-delay(1000);
-goLeft();
-delay(1000);
 }
 void readInput()
 {
-  inp_sensors[0] = analogRead(s1);
-  inp_sensors[1] = analogRead(s2);
-  inp_sensors[2] = analogRead(s3);
-  inp_sensors[3] = analogRead(s4);
-  inp_sensors[4] = analogRead(s5);
-  //  inp_sensors[4] = analogRead(s5);
-  int x0= analogRead(A0);
-int x1= analogRead(A1);
-int x2= analogRead(A2);
-int x3= analogRead(A3);
-int x4= analogRead(A4);
-
-//int x5= analogRead(A5);
-Serial.print(x0);
-Serial.print('\t');
-Serial.print(x1);
-Serial.print('\t');
-Serial.print(x2);
-Serial.print('\t');
-Serial.print(x3);
-Serial.print('\t');
-Serial.print(x4);
-Serial.print('\t');
-/*Serial.print(x5);
-Serial.print('\t');*/
+for(i=0;i<5;i++)
+{
+  inp_sensors[i]=analogRead(14+i);
+  Serial.print(inp_sensors[i]);
+  }
 Serial.println(); 
 
 }

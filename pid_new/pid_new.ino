@@ -8,9 +8,12 @@
 
 #define thresh 512
 
-float kp=0.034,ki=0,kd=0;
-uint8_t i,s_val[5],sensor[5];
-float error,cumm_error,prev_error,k;
+float kp=0.01593,ki=0,kd=0;
+int i,s_val[5],sensor[5];
+float error=0,cumm_error=0,prev_error=0;
+int k;
+long l;
+int u;
 
 void setup()
 {
@@ -47,7 +50,10 @@ void readinput()
         sensor_val+="B";
         else
         sensor_val+="W";*/
+        Serial.print(sensor[i]);
+        Serial.print("  ");
       }
+      Serial.println("");
      // Serial.println(sensor_val);
 }
 
@@ -56,39 +62,106 @@ void follow_line()
   while (1)
   {
     readinput();
-    /*if(sensor_val=="WWWWWBB" || sensor_val=="WWWWBBB" ||sensor_val=="WWWWWWB")
-    {
-          digitalWrite(L2,HIGH);
-          digitalWrite(L1, LOW);
-          analogWrite(pwmR_pin,75);
-          analogWrite(pwmL_pin,75);
-          delay(400);
-    }*/
-    if(sensor[0]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
+    if(l==1111000 && u==000 || l==1111100 && u==000)
+    goLeft();
+    else if(l==00011111 && u==000 || l==0011111 && u==000)
+    goRight();
+    
+   if(sensor[0]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
         {
           analogWrite(pwmR_pin,0);
           analogWrite(pwmL_pin,0);
           continue;
         }
     for(i=0;i<5;i++)
-              s_val[i]=i-2;
+              {s_val[i]=i-2;
+              }
+              
      for(i =0;i<5;i++)
-        error+=(s_val[i]*s_val[i]*s_val[i]+1773*s_val[i])*sensor[i];
+        error+=((s_val[i]*s_val[i]*s_val[i])+1773*s_val[i])*sensor[i+1];
+        //error+=s_val[i]*sensor[i];
     cumm_error+=error;
  k=kp*error + kd*(prev_error - error) + ki*(cumm_error);
+ Serial.println(error);
  Serial.println(k);
+ goFront();
    if(error>0)
         {
-          analogWrite(pwmL_pin,90);
-          analogWrite(pwmR_pin,105-abs(k));
+          analogWrite(pwmL_pin,200);
+          analogWrite(pwmR_pin,200-abs(k));
         }
       else if(error<=0)
             {
-          analogWrite(pwmR_pin,105);
-          analogWrite(pwmL_pin,90-abs(k));
+          analogWrite(pwmR_pin,200);
+          analogWrite(pwmL_pin,200-abs(k));
         }
         prev_error=error;
         error=0;
      }
 }
+
+
+ void goLeft()
+     {
+    digitalWrite(R1, HIGH);
+    digitalWrite(R2, LOW);
+    digitalWrite(L1,HIGH);
+    digitalWrite(L2, LOW);
+       analogWrite(pwmL_pin,150);
+       analogWrite(pwmR_pin,150);
+       delay(60);
+       Serial.print("GOING SHARP LEFT\n");
+       do
+       {
+     digitalWrite(R1, HIGH);
+    digitalWrite(R2, LOW);
+    digitalWrite(L2,HIGH);
+    digitalWrite(L1, LOW);
+     analogWrite(pwmL_pin,120);
+     analogWrite(pwmR_pin,100);
+     delay(50);
+     readinput();
+     
+     /*digitalWrite(a1,HIGH);
+     digitalWrite(a2,LOW);
+     digitalWrite(b1,HIGH);
+     digitalWrite(b2,LOW);
+     analogWrite(a_pwm,0);
+     analogWrite(b_pwm,0);
+     delay(50);*/
+     if( l==0110000 || l==1110000 || l==0111000)
+           break;
+       }while (1);
+       
+      
+     }
+
+
+     void goRight()
+     {
+       digitalWrite(R1, HIGH);
+    digitalWrite(R2, LOW);
+    digitalWrite(L1,HIGH);
+    digitalWrite(L2, LOW);
+       analogWrite(pwmL_pin,150);
+       analogWrite(pwmR_pin,150);
+       delay(60);
+        Serial.print("GOING SHARP RIGHT\n");
+       do
+       {
+        digitalWrite(R2, HIGH);
+    digitalWrite(R1, LOW);
+    digitalWrite(L1,HIGH);
+    digitalWrite(L2, LOW);
+     analogWrite(pwmL_pin,120);
+     analogWrite(pwmR_pin,100);
+     delay(50);
+     readinput();
+  
+     if(l==0000110 ||l==0000111 || l==0001110)
+           break;
+       }while (1);
+      
+      
+     }
 

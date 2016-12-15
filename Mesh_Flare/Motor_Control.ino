@@ -1,3 +1,4 @@
+/*
 void finish()
 {
     for(i=0;i<7;i++)
@@ -12,3 +13,20 @@ void finish()
      {
      }
 }
+int a=90;*/
+  void goFront()
+  {
+    analogWrite(pwmR_pin, 63);
+    digitalWrite(R1, HIGH);
+    digitalWrite(R2, LOW);
+    analogWrite(pwmL_pin,50);
+    digitalWrite(L1,HIGH);
+    digitalWrite(L2, LOW);
+  }
+
+  void stopm()
+  {
+     analogWrite(pwmR_pin, 0);
+      analogWrite(pwmL_pin,0);
+      delay(100);
+  }
