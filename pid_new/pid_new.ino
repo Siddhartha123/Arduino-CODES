@@ -9,7 +9,7 @@
 #define thresh 512
 
 float kp=0.01593,ki=0,kd=0;
-int i,s_val[5],sensor[5];
+int i,j,s_val[5],sensor[7];
 float error=0,cumm_error=0,prev_error=0;
 int k;
 long l;
@@ -43,31 +43,30 @@ void loop()
   }
 void readinput()
 {
-  for(i=0;i<5;i++)
+  l=0;
+  for(j=0;j<7;j++)
       {
-        sensor[i]=analogRead(A5-i)>thresh?0:1;
-       /* if(!sensor[i])
-        sensor_val+="B";
-        else
-        sensor_val+="W";*/
-        Serial.print(sensor[i]);
-        Serial.print("  ");
+        sensor[j]=analogRead(A6-j)>thresh?0:1;
+       l=l*10+sensor[j];
       }
-      Serial.println("");
-     // Serial.println(sensor_val);
+u=0;
+u=digitalRead(18);
+u=u*10+(analogRead(A7)>thresh?0:1);
+u=u*10+digitalRead(19);
 }
+
 
 void follow_line()
 {
   while (1)
   {
     readinput();
-    if(l==1111000 && u==000 || l==1111100 && u==000)
+    if(sensor[0]*sensor[1]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[5]+sensor[6]==0)
     goLeft();
-    else if(l==00011111 && u==000 || l==0011111 && u==000)
+    else if(sensor[5]*sensor[6]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[0]+sensor[1]==0)
     goRight();
     
-   if(sensor[0]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
+   if(sensor[5]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
         {
           analogWrite(pwmR_pin,0);
           analogWrite(pwmL_pin,0);
@@ -119,7 +118,7 @@ void follow_line()
     digitalWrite(L1, LOW);
      analogWrite(pwmL_pin,120);
      analogWrite(pwmR_pin,100);
-     delay(50);
+    // delay(50);
      readinput();
      
      /*digitalWrite(a1,HIGH);
@@ -129,7 +128,7 @@ void follow_line()
      analogWrite(a_pwm,0);
      analogWrite(b_pwm,0);
      delay(50);*/
-     if( l==0110000 || l==1110000 || l==0111000)
+     if( sensor[2]==1)
            break;
        }while (1);
        
@@ -145,7 +144,7 @@ void follow_line()
     digitalWrite(L2, LOW);
        analogWrite(pwmL_pin,150);
        analogWrite(pwmR_pin,150);
-       delay(60);
+       //delay(60);
         Serial.print("GOING SHARP RIGHT\n");
        do
        {
@@ -158,7 +157,7 @@ void follow_line()
      delay(50);
      readinput();
   
-     if(l==0000110 ||l==0000111 || l==0001110)
+     if(sensor[4]==1)
            break;
        }while (1);
       

@@ -14,8 +14,8 @@
 #define rightMotor2 4
 #define rightMotorPWM 5
 #define leftMotor1 12
-#define leftMotor2 13
-#define leftMotorPWM 11
+#define leftMotor2 11
+#define leftMotorPWM 10
 #define motorPower 8
 
 QTRSensorsRC qtrrc((unsigned char[]) {  14, 15, 16, 17, 18, 19} ,NUM_SENSORS, TIMEOUT, EMITTER_PIN); // sensor connected through analog pins A0 - A5 i.e. digital pins 14-19

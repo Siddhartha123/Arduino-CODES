@@ -11,8 +11,7 @@
 *boundaries = 250;
 *****************************************/
 
-#define gridX	13
-#define gridY	15
+
 #define WEST	1                               //For reference only
 #define NORTHWEST	2
 #define NORTH	3
@@ -28,29 +27,9 @@
 
 
 //global variables declaration
-int dx=5, dy=11;//present coordinate of bot
+//present coordinate of bot
 int revdir,w,way,mindir,mingridpoint,flag,prevdir=3,j;//revese direction,no. of turns,direction to turn,value of grid point to turn,previous direction,loop variable
 int arr[2],brr[2];       
-
-grid[][] = {
-					                           250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
-					                                     250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1,  1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
-                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250, 
-                                      250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
-                                        };//initial grid
-
-
-
-grid[dx][dy]=i;
 
 
 void trialrun()
@@ -58,7 +37,7 @@ void trialrun()
 
 
 	
-		
+		way=0;
 		arr[0]= arr[0]>arr[1]?arr[1]:arr[0];
 		arr[1]=arr[0]>arr[1]?arr[0]:arr[1];
 		mindir=0;
@@ -354,7 +333,7 @@ void trialrun()
 		prevdir=mindir;
 		showgrid();
 		Serial.println();
-   Serial.println(dx+"    " +dy+"    "+way);
+ //  Serial.println(dx+"    " +dy+"    "+way);
    if(way==1 || way==2)
    {
     goLeft();
@@ -364,6 +343,11 @@ void trialrun()
    else if(way==4 || way==5)
    {
     goRight();
+    Front();
+   }
+   else if(way==0)
+   {
+    goLeft();
     Front();
    }
 		

@@ -18,8 +18,8 @@ uint8_t PWM_Left=80;
  * Pin 5 is the mouse data pin, pin 6 is the clock pin
  * Feel free to use whatever pins are convenient.
  */
- #define m_clk 19
- #define m_data 18
+ #define m_clk 11
+ #define m_data 10
 PS2 mouse(m_clk, m_data); //(clock_pin, data_pin) any pin can be used
 
 float calib_factor=1;
@@ -31,16 +31,19 @@ void calculate_xy();
 /*
  * PID control consants and sensor related variables
  */
+ #define gridX  13
+#define gridY 15
 #define thresh 512
-float kp=5,ki=0,kd=0;
+//float kp=5,ki=0,kd=0;
 float power;
 float  previousError=0;
 float error;
+float cumm_error,prev_error,k;
 float totalError;
 uint8_t activeSensor;
 float avgSensor;
 float totalSensor;
-int sensor[7];                            //raw readings from sensor array from left to right
+//int sensor[7];                            //raw readings from sensor array from left to right
 String sensor_val,sensor_val_prev;
 String s,s1="                                ";
 char c;
@@ -49,14 +52,33 @@ void process_sensor();
 void PID_program();
 void change_constants();
 void goFront();
+void goLeft();
+void goRight();
+void Front();
+void showgrid();
+void trialrun();
+void follow_line();
 /*
  * Miscellaneous variables and declarations
  */
 uint8_t i=100;
 int d;
-#define gridX  13
-#define gridY 15
-uint8_t grid[gridX][gridY];
+int dx=5, dy=11;
+uint8_t grid[gridX][gridY] = {
+                                     250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1,  1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250,
+                                               250, 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 , 1 ,250, 
+                                      250,250,250,250,250,250,250,250,250,250,250,250,250,250,250,
+                                        };//initial grid
 
 
 void setup()
@@ -68,19 +90,23 @@ void setup()
     pinMode(pwmR_pin,OUTPUT);
     pinMode(pwmL_pin,OUTPUT);
     pinMode(16,OUTPUT);
+    grid[dx][dy]=i;
     //mouse.init();
   //attachInterrupt(digitalPinToInterrupt(10),finish,LOW);
   Serial.begin(9600);
  digitalWrite(16, HIGH);
  goFront();
+// analogWrite(pwmR_pin, 200);
+  //analogWrite(pwmL_pin, 200);
 }
 
 void loop()
 {
+  /*
   process_sensor();
-  follow_line();
-  trialrun();
-  //calculate_xy();
+  follow_line(); 
+  trialrun();*/
+  calculate_xy();
   //goFront();
 }
 

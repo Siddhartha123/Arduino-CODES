@@ -1,3 +1,5 @@
+
+
    #define SENSORS 5
   #define THRESH 300
   #define R1 5
@@ -6,7 +8,10 @@
   #define L1 3
   #define L2 2
   #define pwmL 11            //Left Motor=M2
-             
+
+
+// Create aREST instance
+         
         
   int inp_sensors[SENSORS], i;
   String pins[5];
@@ -21,10 +26,12 @@
     pinMode(L2, OUTPUT);
     pinMode(pwmR, OUTPUT);
     pinMode(pwmL, OUTPUT);
+    initialize_variables();
   }
 
 void loop() 
 {
+  change_variables();
   readInput();
 setValues();
 processValues();
@@ -34,9 +41,9 @@ void readInput()
 for(i=0;i<5;i++)
 {
   inp_sensors[i]=analogRead(14+i);
-  Serial.print(inp_sensors[i]);
+  //Serial.print(inp_sensors[i]);
   }
-Serial.println(); 
+//Serial.println(); 
 
 }
 void setValues()
@@ -54,7 +61,7 @@ void setValues()
       cmp+="W";
     }
   }
-  Serial.println(cmp+" ");
+  //Serial.println(cmp+" ");
 }
 void processValues()
 {
@@ -111,7 +118,7 @@ void softLeft()
     analogWrite(pwmL, 100);
     digitalWrite(L1, HIGH);
     digitalWrite(L2, LOW);
-    Serial.print("soft Left ");
+    //Serial.print("soft Left ");
     delay(150);  
 }
   void softRight()
@@ -122,7 +129,7 @@ void softLeft()
     analogWrite(pwmL, 240);
     digitalWrite(R1, HIGH);
     digitalWrite(R2, LOW);
-   Serial.print("soft Right ");
+  // Serial.print("soft Right ");
     delay(150);
   }
 void goLeft()
@@ -133,7 +140,7 @@ void goLeft()
     analogWrite(pwmL, 0);
     digitalWrite(L1, LOW);
     digitalWrite(L2, HIGH);
-    Serial.print("left ");
+    //Serial.print("left ");
     delay(100);
   }
   void goRight()
@@ -144,7 +151,7 @@ void goLeft()
     analogWrite(pwmL,100);
     digitalWrite(R1, LOW);
     digitalWrite(R2, HIGH);
-   Serial.print("Right ");
+  // Serial.print("Right ");
     delay(100);
   }
   void hardRight()
@@ -155,7 +162,7 @@ void goLeft()
     analogWrite(pwmL, 150);
     digitalWrite(R1, LOW);
     digitalWrite(R2, HIGH);
-    Serial.print("hardright ");
+    //Serial.print("hardright ");
     delay(300);
   }
   void hardLeft()
@@ -166,7 +173,7 @@ void goLeft()
     analogWrite(pwmL, 150);
     digitalWrite(L1, LOW);
     digitalWrite(L2, HIGH);
-   Serial.print("hardleft ");
+  // Serial.print("hardleft ");
     delay(300);
   }
   void goFront()
@@ -177,7 +184,7 @@ void goLeft()
     analogWrite(pwmL, 150);
     digitalWrite(L1, HIGH);
     digitalWrite(L2, LOW);
-   Serial.print("front ");
+   //Serial.print("front ");
     delay(200);
   }
   void goReverse()
@@ -188,7 +195,7 @@ void goLeft()
     analogWrite(pwmL, 150);
     digitalWrite(L2, HIGH);
     digitalWrite(L1, LOW);
-    Serial.print("front ");
+    //Serial.print("front ");
     delay(50);
   }
   void goSlow()
@@ -199,7 +206,7 @@ void goLeft()
     analogWrite(pwmL, 180);
     digitalWrite(L1, HIGH);
     digitalWrite(L2, LOW);
-    Serial.print("slow ");
+    //Serial.print("slow ");
     delay(120);
   }
   void halt()
@@ -210,9 +217,10 @@ void goLeft()
     analogWrite(pwmL, 0);
     digitalWrite(L1, LOW);
     digitalWrite(L2, LOW);
-    Serial.print("halt ");
+   // Serial.print("halt ");
     delay(200);
   }
- 
+
+
     
     

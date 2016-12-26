@@ -16,10 +16,10 @@ void finish()
 int a=90;*/
   void goFront()
   {
-    analogWrite(pwmR_pin, 63);
+    //analogWrite(pwmR_pin, 63);
     digitalWrite(R1, HIGH);
     digitalWrite(R2, LOW);
-    analogWrite(pwmL_pin,50);
+   // analogWrite(pwmL_pin,50);
     digitalWrite(L1,HIGH);
     digitalWrite(L2, LOW);
   }

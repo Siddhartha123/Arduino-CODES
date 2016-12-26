@@ -9,23 +9,24 @@
 #define thresh 512
 
 float kp=0.034,ki=0,kd=0;
-uint8_t i,s_val[5],sensor[5],power;
-float error,cumm_error,prev_error,k;
+uint8_t s_val[5],sensor[7];
+int u1,u2,u3;
+
 
 
 
 void process_sensor()
 {
-  l=0;
+ //l=0;
   for(j=0;j<7;j++)
       {
         sensor[j]=analogRead(A6-j)>thresh?0:1;
-       l=l*10+sensor[j];
+      // l=l*10+sensor[j];
       }
-u=0;
-u=digitalRead(18);
-u=u*10+(analogRead(A7)>thresh?0:1);
-u=u*10+digitalRead(19);
+//u=0;
+u1=digitalRead(18);
+u2=(analogRead(A7)>thresh?0:1);
+u3=digitalRead(19);
 }
 
     void follow_line()
@@ -40,71 +41,69 @@ u=u*10+digitalRead(19);
           delay(400);
     }*/
     memset(arr,9,sizeof(arr));
-    if(sensor[0]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
+    if(sensor[0]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0 && u1==0 && u2==0 && u3==0)
         {
-          analogWrite(pwmR_pin,0);
-          analogWrite(pwmL_pin,0);
-          continue;
+         w=0;
         }
 
-     if(l==0011100 && u==010)
+     if(sensor[0]+sensor[1]==0 && sensor[2]+sensor[3]+sensor[4]>=2 && sensor[5]+sensor[6]==0 && u2==1 && u1==0 && u3==0)
      {
       //Front();
       //return to grid 1,3  
       w=1;arr[0]=3;
      }
-     else if(l==1111000 && u==000 || l==1111100 && u==000)
+     else if(sensor[0]*sensor[1]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[5]+sensor[6]==0 && u2==0 && u1==0 && u3==0)
      {
       //goSharpLeft();
       //return to grid 1,1
       w=1;arr[0]=1;
      }
-     else if(l==00011111 && u==000 || l==0011111 && u==000)
+     else if(sensor[5]*sensor[6]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[0]+sensor[1]==0 && u2==0 && u3==0 && u1==0)
      {
       //goSharpRight(); 
       //return to grid 1,5
       w=1;arr[0]=5;
      }
-     else if(l==1111000 && u==010 || l=1111100 && u==010)
+     else if(sensor[0]*sensor[1]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[5]+sensor[6]==0 && u2==1 && u1==0 && u3==0)
      {
       //goSharpLeft();
       //return to grid 2,1,3
       w=2;arr[0]=1;arr[1]=3;
      }
-     else if(l==0001111 && u==010 || l=0011111 && u==010)
+     else if(sensor[5]*sensor[6]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[0]+sensor[1]==0 && u2==1 && u1==0 && u3==0)
      {
       //Front();
       //return to grid 2,3,5
       w=2;
       arr[0]=3;arr[1]=5;
      }
-     else if(l==1111111 && u==000)
+     else if(sensor[5]*sensor[6]*sensor[2]*sensor[3]*sensor[4]*sensor[0]*sensor[1]==1 && u1==0 && u2==0 && u3==0 )
      {
       //goSharpLeft();
       //return to grid 2,1,5
       w=2;arr[0]=1;arr[1]=5;
      }
-     else if(l==0011100 && u==001 || l==0011100 && u==011 || l==0011110 && u==001 || l==0011110 && u==011)
+     else if(sensor[0]+sensor[1]==0 && sensor[2]+sensor[3]+sensor[4]>=2 && sensor[5]+sensor[6]==0 && u2==0 && u3==1 && u1==0)
      {
       //goSoftRight();
       //return to grid 1,4
       w=1;
       arr[0]=4;
      }
-      else if(l==0011100 && u==100 || l==0011100 && u==110 || l==0111100 && u==100 || l==0111100 && u==110)
+      /*else if()
      {
       //goSoftLeft();
       //return to grid 1,2
       w=1;arr[0]=2;
-     }
-      else if(l==1111000 && u==001 || l==1111000 && u==011 || l==1111100 && u==001 || l==1111100 && u==011)
+     }*/
+      else if(sensor[5]+sensor[6]==0 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[0]*sensor[1]==1 && u2==0 && u3==1 && u1==0)
      {
       //goSharpLeft();
       //return to grid 2,1,4
       w=2;
       arr[0]=1;arr[1]=4;
      }
-      else if(l==1111000 && u==110 || l==1111100 && u==100 || l==1111100 && u==110 || l==1111000 && u==100)
+      /*else if(l==1111000 && u==110 || l==1111100 && u==100 || l==1111100 && u==110 || l==1111000 && u==100)
      {
       //goSharpLeft();
       //return to grid 2,1,2
@@ -127,14 +126,14 @@ u=u*10+digitalRead(19);
       //goSoftRight();
       //return to grid 2,4,5
       w=2;arr[0]=4;arr[1]=5;
-     }
-      else if(l==0011100 && u==101)
+     }*/
+      else if(sensor[5]+sensor[6]==1 && sensor[2]+sensor[3]+sensor[4]>=2 && sensor[0]+sensor[1]==1 && u2==0 && u3==1 && u1==1)
      {
       //goSoftLeft();
       //return to grid 2,2,4
       w=2;arr[0]=2;arr[1]=4;
      }
-      else if(l==0001111 && u==110 || l==0011111 && u==100 || l==0011111 && u==110)
+      else if(sensor[0]+sensor[1]==0 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[5]*sensor[6]==1 && u2==0 && u3==0 && u1==1)
      {
       //goSoftLeft();
       //return to grid 2,2,5
@@ -144,32 +143,46 @@ u=u*10+digitalRead(19);
 
 void Front()
 {
-  while(1)
+  while (1)
   {
-       for(j=0;j<5;j++)
-        error+=(s_val[j]*s_val[j]*s_val[j]+1773*s_val[j])*sensor[j];
-  cumm_error+=error;
+    process_sensor();
+    calculate_xy();
+    if(sensor[0]*sensor[1]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[5]+sensor[6]==0)
+    goLeft();
+    else if(sensor[5]*sensor[6]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[0]+sensor[1]==0)
+    goRight();
+    
+   if(sensor[5]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
+        {
+          analogWrite(pwmR_pin,0);
+          analogWrite(pwmL_pin,0);
+          continue;
+        }
+    for(i=0;i<5;i++)
+              {s_val[i]=i-2;
+              }
+              
+     for(i =0;i<5;i++)
+        error+=((s_val[i]*s_val[i]*s_val[i])+1773*s_val[i])*sensor[i+1];
+        //error+=s_val[i]*sensor[i];
+    cumm_error+=error;
  k=kp*error + kd*(prev_error - error) + ki*(cumm_error);
- //Serial.println(k);
- power=k;
+ Serial.println(error);
+ Serial.println(k);
+ goFront();
    if(error>0)
         {
-          analogWrite(pwmL_pin,90);
-          analogWrite(pwmR_pin,120-abs(power));
-          Serial.print("90      ");
-          Serial.println(120-abs(power));
+          analogWrite(pwmL_pin,200);
+          analogWrite(pwmR_pin,200-abs(k));
         }
       else if(error<=0)
             {
-          analogWrite(pwmR_pin,120);
-          analogWrite(pwmL_pin,90-abs(power));
-           
-          Serial.print(90-abs(power));
-          Serial.print("120      ");
+          analogWrite(pwmR_pin,200);
+          analogWrite(pwmL_pin,200-abs(k));
         }
         prev_error=error;
         error=0;
-  }
+     }
 }
  void goLeft()
      {
@@ -189,7 +202,7 @@ void Front()
     digitalWrite(L1, LOW);
      analogWrite(pwmL_pin,120);
      analogWrite(pwmR_pin,100);
-     delay(50);
+    // delay(50);
      process_sensor();
      
      /*digitalWrite(a1,HIGH);
@@ -199,7 +212,7 @@ void Front()
      analogWrite(a_pwm,0);
      analogWrite(b_pwm,0);
      delay(50);*/
-     if( l==0110000 || l==1110000 || l==0111000)
+     if( sensor[2]==1)
            break;
        }while (1);
        
@@ -209,13 +222,13 @@ void Front()
 
      void goRight()
      {
-       digitalWrite(R1, HIGH);
+         digitalWrite(R1, HIGH);
     digitalWrite(R2, LOW);
     digitalWrite(L1,HIGH);
     digitalWrite(L2, LOW);
        analogWrite(pwmL_pin,150);
        analogWrite(pwmR_pin,150);
-       delay(60);
+       //delay(60);
         Serial.print("GOING SHARP RIGHT\n");
        do
        {
@@ -228,14 +241,13 @@ void Front()
      delay(50);
      process_sensor();
   
-     if(l==0000110 ||l==0000111 || l==0001110)
+     if(sensor[4]==1)
            break;
        }while (1);
       
-      
      }
 
-}
+
 
 /*void linefollow()
 {

@@ -44,9 +44,4 @@ void loop() {
        
     }
   }
-Serial.println("hi");
-
-
-
-
 }
