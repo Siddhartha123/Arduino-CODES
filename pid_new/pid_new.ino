@@ -4,7 +4,7 @@
 
 #define R1 22
 #define R2 23
-#define pwmR_pin 3           
+#define pwmR_pin 3
 
 #define thresh 512
 
@@ -23,7 +23,7 @@ void setup()
     pinMode(L2,OUTPUT);
     pinMode(pwmR_pin,OUTPUT);
     pinMode(pwmL_pin,OUTPUT);
-    Serial.begin(9600);
+    Serial.begin(115200);
     goFront();
 }
 
@@ -65,7 +65,7 @@ void follow_line()
     goLeft();
     else if(sensor[5]*sensor[6]==1 && sensor[2]+sensor[3]+sensor[4]!=0 && sensor[0]+sensor[1]==0)
     goRight();
-    
+
    if(sensor[5]+sensor[1]+sensor[2]+sensor[3]+sensor[4]==0)
         {
           analogWrite(pwmR_pin,0);
@@ -75,7 +75,7 @@ void follow_line()
     for(i=0;i<5;i++)
               {s_val[i]=i-2;
               }
-              
+
      for(i =0;i<5;i++)
         error+=((s_val[i]*s_val[i]*s_val[i])+1773*s_val[i])*sensor[i+1];
         //error+=s_val[i]*sensor[i];
@@ -120,7 +120,7 @@ void follow_line()
      analogWrite(pwmR_pin,100);
     // delay(50);
      readinput();
-     
+
      /*digitalWrite(a1,HIGH);
      digitalWrite(a2,LOW);
      digitalWrite(b1,HIGH);
@@ -131,8 +131,8 @@ void follow_line()
      if( sensor[2]==1)
            break;
        }while (1);
-       
-      
+
+
      }
 
 
@@ -156,11 +156,10 @@ void follow_line()
      analogWrite(pwmR_pin,100);
      delay(50);
      readinput();
-  
+
      if(sensor[4]==1)
            break;
        }while (1);
-      
-      
-     }
 
+
+     }

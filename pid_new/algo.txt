@@ -1,0 +1,9 @@
+The following algorithm is written assuming the bot moves straight enough.
+
+follow the path using pid control;
+if all sensors to the left or all sensors to the right are white or all sensors are then stop:
+	(assuming the bot has moved certain distance before stopping,)check if the current sensor values detect a straight path ahead or no path:
+	if path is detected then there must be three paths:
+	choose one;
+	else if no path is detected then there must be two paths:
+	choose one;
