@@ -1,8 +1,8 @@
 #include <ESP8266WiFi.h>
-const char* ssid = "LENOVO_WIFI";
-const char* pass = "12345678";
+const char* ssid = "abc";
+const char* pass = "123456789";
 int status = WL_IDLE_STATUS;
-char servername[]="google.com";  // remote server we will connect to
+char servername[]="192.168.43.245";  // remote server we will connect to
 
 WiFiClient client;
 
@@ -25,7 +25,7 @@ void setup() {
     if (client.connect(servername, 80)) {
       Serial.println("connected");
       // Make a HTTP request:
-      client.println("GET /search?q=arduino HTTP/1.0");
+      client.println("GET /iot/request.php?id=123 HTTP/1.0");
       client.println();
     
     }

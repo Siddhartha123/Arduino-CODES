@@ -43,7 +43,7 @@ uint8_t PCF8574::value()
   return _data;
 }
 
-void PCF8574::write8(uint8_t value)
+void PCF8574::write8(int value)
 {
   Wire.beginTransmission(_address);
   _data = value;

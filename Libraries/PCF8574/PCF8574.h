@@ -30,7 +30,7 @@ class PCF8574
   uint8_t read(uint8_t pin); 
   uint8_t value();  
 
-  void write8(uint8_t value); 
+  void write8(int value); 
   void write(uint8_t pin, uint8_t value); 
 
   void toggle(uint8_t pin);

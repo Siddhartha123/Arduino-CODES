@@ -65,7 +65,7 @@ void EspDashClass::handleJS(){
     file.close();
 }
 
-void EspDashClass::addTab(const char* _tabName, const char* _value){
+void EspDashClass::addTab(const char* _tabName, String _value){
     if(tabCount > TABS_LIMIT) return;
 
     tabName[tabCount] = _tabName;
@@ -281,7 +281,7 @@ void EspDashClass::begin(const char* _ssid, const char* _pass){
     server.on("/img/serverupdate.png", std::bind(&EspDashClass::handleUpdateImage, this));
     server.on("/img/logo.png", std::bind(&EspDashClass::handleLogo, this));
 
-    httpUpdater.setup(&server, "/update");
+    httpUpdater.setup(&server);
 
     server.begin();
 }
