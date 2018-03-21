@@ -22,6 +22,7 @@ void setup()
   PCF_2.write8(sev_seg(h2));              
   PCF_3.write8(sev_seg(m1));         
   PCF_4.write8(sev_seg(m2));   
+  
 }
 void loop(){  
 /*
